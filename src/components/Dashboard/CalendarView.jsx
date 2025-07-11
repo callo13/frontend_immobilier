@@ -63,6 +63,14 @@ const CalendarView = () => {
   const currentYear = date.getFullYear();
   const years = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i);
 
+  const dateInformation = () => {
+    if (view === 'day') {
+       return format(date, "EEEE d MMMM yyyy", { locale: fr }).charAt(0).toUpperCase() + format(date, "EEEE d MMMM yyyy", { locale: fr }).slice(1);
+    } else{
+      return format(date, "MMMM yyyy", { locale: fr }).charAt(0).toUpperCase() + format(date, "MMMM yyyy", { locale: fr }).slice(1);
+    }
+  }
+
   const handleYearChange = (e) => {
     const newYear = parseInt(e.target.value, 10);
     setDate(new Date(newYear, date.getMonth(), date.getDate()));
@@ -97,7 +105,7 @@ const CalendarView = () => {
         {/* Mois/année centré */}
         <div className="flex-1 flex justify-center">
           <div className="text-lg font-bold text-blue-800">
-            {format(date, "MMMM yyyy", { locale: fr }).charAt(0).toUpperCase() + format(date, "MMMM yyyy", { locale: fr }).slice(1)}
+            {dateInformation()}
           </div>
         </div>
         {/* Sélecteurs vue et année à droite */}
@@ -147,4 +155,4 @@ const CalendarView = () => {
   );
 };
 
-export default CalendarView; 
+export default CalendarView;
