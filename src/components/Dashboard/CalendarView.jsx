@@ -73,6 +73,7 @@ const CalendarView = () => {
       <h2 className="font-extrabold text-xl text-gray-800 mb-4">Calendrier de la semaine</h2>
       {/* Barre de navigation personnalisée + Listbox vue + Listbox année */}
       <div className="flex items-center justify-between mb-4 gap-4 flex-wrap">
+        {/* Boutons navigation à gauche */}
         <div className="flex gap-1 items-center">
           <button onClick={() => setDate(subMonths(date, 1))} className="p-2 rounded hover:bg-blue-100 transition" aria-label="Mois précédent">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-800" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
@@ -82,10 +83,14 @@ const CalendarView = () => {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-800" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
           </button>
         </div>
-        <div className="flex items-center gap-4">
+        {/* Mois/année centré */}
+        <div className="flex-1 flex justify-center">
           <div className="text-lg font-bold text-blue-800">
             {format(date, "MMMM yyyy", { locale: fr }).charAt(0).toUpperCase() + format(date, "MMMM yyyy", { locale: fr }).slice(1)}
           </div>
+        </div>
+        {/* Sélecteurs vue et année à droite */}
+        <div className="flex items-center gap-4">
           <select
             value={view}
             onChange={e => setView(e.target.value)}
