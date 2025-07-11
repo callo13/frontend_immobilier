@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
-import { format, parse, startOfWeek, getDay, addMonths, subMonths } from 'date-fns';
+import { format, parse, startOfWeek, getDay, addMonths, subMonths, addWeeks, subWeeks, addDays, subDays } from 'date-fns';
 import fr from 'date-fns/locale/fr';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
@@ -68,6 +68,17 @@ const CalendarView = () => {
     setDate(new Date(newYear, date.getMonth(), date.getDate()));
   };
 
+  const handlePrev = () => {
+    if (view === 'day') setDate(subDays(date, 1));
+    else if (view === 'week') setDate(subWeeks(date, 1));
+    else setDate(subMonths(date, 1));
+  };
+  const handleNext = () => {
+    if (view === 'day') setDate(addDays(date, 1));
+    else if (view === 'week') setDate(addWeeks(date, 1));
+    else setDate(addMonths(date, 1));
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow p-7 mb-10">
       <h2 className="font-extrabold text-xl text-gray-800 mb-4">Calendrier de la semaine</h2>
@@ -75,11 +86,11 @@ const CalendarView = () => {
       <div className="flex items-center justify-between mb-4 gap-4 flex-wrap">
         {/* Boutons navigation à gauche */}
         <div className="flex gap-1 items-center">
-          <button onClick={() => setDate(subMonths(date, 1))} className="p-2 rounded hover:bg-blue-100 transition" aria-label="Mois précédent">
+          <button onClick={handlePrev} className="p-2 rounded hover:bg-blue-100 transition" aria-label="Précédent">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-800" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
           </button>
           <button onClick={() => setDate(new Date())} className="bg-blue-800 text-white px-3 py-1 rounded font-semibold hover:bg-blue-900 transition text-sm mx-1">Aujourd'hui</button>
-          <button onClick={() => setDate(addMonths(date, 1))} className="p-2 rounded hover:bg-blue-100 transition" aria-label="Mois suivant">
+          <button onClick={handleNext} className="p-2 rounded hover:bg-blue-100 transition" aria-label="Suivant">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-800" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
           </button>
         </div>
