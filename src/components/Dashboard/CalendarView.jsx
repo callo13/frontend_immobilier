@@ -59,35 +59,49 @@ const CalendarView = () => {
   const [date, setDate] = useState(new Date(2025, 6, 7));
   const [view, setView] = useState('week');
 
-  const handlePrevMonth = () => setDate(subMonths(date, 1));
-  const handleNextMonth = () => setDate(addMonths(date, 1));
-  const handleToday = () => setDate(new Date());
+  // Années pour la listbox année
+  const currentYear = date.getFullYear();
+  const years = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i);
+
+  const handleYearChange = (e) => {
+    const newYear = parseInt(e.target.value, 10);
+    setDate(new Date(newYear, date.getMonth(), date.getDate()));
+  };
 
   return (
     <div className="bg-white rounded-2xl shadow p-7 mb-10">
       <h2 className="font-extrabold text-xl text-gray-800 mb-4">Calendrier de la semaine</h2>
-      {/* Barre de navigation personnalisée + Listbox */}
+      {/* Barre de navigation personnalisée + Listbox vue + Listbox année */}
       <div className="flex items-center justify-between mb-4 gap-4 flex-wrap">
         <div className="flex gap-1 items-center">
-          <button onClick={handlePrevMonth} className="p-2 rounded hover:bg-blue-100 transition" aria-label="Mois précédent">
+          <button onClick={() => setDate(subMonths(date, 1))} className="p-2 rounded hover:bg-blue-100 transition" aria-label="Mois précédent">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-800" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
           </button>
-          <button onClick={handleToday} className="bg-blue-800 text-white px-3 py-1 rounded font-semibold hover:bg-blue-900 transition text-sm mx-1">Aujourd'hui</button>
-          <button onClick={handleNextMonth} className="p-2 rounded hover:bg-blue-100 transition" aria-label="Mois suivant">
+          <button onClick={() => setDate(new Date())} className="bg-blue-800 text-white px-3 py-1 rounded font-semibold hover:bg-blue-900 transition text-sm mx-1">Aujourd'hui</button>
+          <button onClick={() => setDate(addMonths(date, 1))} className="p-2 rounded hover:bg-blue-100 transition" aria-label="Mois suivant">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-800" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
           </button>
         </div>
         <div className="flex items-center gap-4">
           <div className="text-lg font-bold text-blue-800">
-            {format(date, "MMMM yyyy", { locale: fr })}
+            {format(date, "MMMM yyyy", { locale: fr }).charAt(0).toUpperCase() + format(date, "MMMM yyyy", { locale: fr }).slice(1)}
           </div>
           <select
             value={view}
             onChange={e => setView(e.target.value)}
             className="border border-blue-200 rounded px-3 py-1 text-blue-800 font-semibold bg-white focus:outline-none focus:ring-2 focus:ring-blue-300 text-sm"
           >
-            {VIEWS.map(v => (
-              <option key={v.value} value={v.value}>{v.label}</option>
+            <option value="day">Jour</option>
+            <option value="week">Semaine</option>
+            <option value="month">Mois</option>
+          </select>
+          <select
+            value={currentYear}
+            onChange={handleYearChange}
+            className="border border-blue-200 rounded px-3 py-1 text-blue-800 font-semibold bg-white focus:outline-none focus:ring-2 focus:ring-blue-300 text-sm"
+          >
+            {years.map(y => (
+              <option key={y} value={y}>{y}</option>
             ))}
           </select>
         </div>
