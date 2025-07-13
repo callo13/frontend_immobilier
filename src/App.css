@@ -40,3 +40,17 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Forcer le texte des événements à aller à la ligne et améliorer la lisibilité */
+.rbc-event-content, .rbc-event {
+  white-space: normal !important;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  font-size: 0.85em;
+  padding: 2px 4px;
+}
+
+/* Masquer l'heure par défaut dans les événements react-big-calendar */
+.rbc-event-label {
+  display: none !important;
+}

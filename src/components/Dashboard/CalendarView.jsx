@@ -55,6 +55,14 @@ const VIEWS = [
   { value: 'month', label: 'Mois' },
 ];
 
+// Composant custom pour l'affichage des événements (heure sur la première ligne, titre sur la deuxième)
+const CustomEvent = ({ event }) => (
+  <div className="p-1 whitespace-normal break-words text-xs font-semibold leading-snug">
+    <div>{event.title}</div>
+    <div className="font-bold">{format(event.start, 'HH:mm')} – {format(event.end, 'HH:mm')}</div>
+  </div>
+);
+
 const CalendarView = () => {
   const [date, setDate] = useState(new Date(2025, 6, 7));
   const [view, setView] = useState('week');
@@ -146,6 +154,9 @@ const CalendarView = () => {
           messages={{ week: 'Semaine', day: 'Jour', month: 'Mois', today: 'Aujourd\'hui', previous: 'Précédent', next: 'Suivant' }}
           style={{ borderRadius: '1rem', background: 'white', padding: 0 }}
           toolbar={false}
+          components={{
+            event: CustomEvent
+          }}
         />
       </div>
       <div className="mt-4 text-right">
