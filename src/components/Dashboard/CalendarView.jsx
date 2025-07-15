@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay, addMonths, subMonths, addWeeks, subWeeks, addDays, subDays } from 'date-fns';
 import fr from 'date-fns/locale/fr';
@@ -66,6 +66,14 @@ const CustomEvent = ({ event }) => (
 const CalendarView = () => {
   const [date, setDate] = useState(new Date(2025, 6, 7));
   const [view, setView] = useState('week');
+  const [isGoogleConnected, setIsGoogleConnected] = useState(false);
+
+  // Vérifier la connexion Google au chargement
+  useEffect(() => {
+    fetch('http://localhost:5000/api/google/status', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => setIsGoogleConnected(!!data.connected));
+  }, []);
 
   // Années pour la listbox année
   const currentYear = date.getFullYear();
@@ -94,6 +102,28 @@ const CalendarView = () => {
     else if (view === 'week') setDate(addWeeks(date, 1));
     else setDate(addMonths(date, 1));
   };
+
+  // Fonction pour se connecter à Google via le backend
+  const handleGoogleConnect = () => {
+    window.location.href = "http://localhost:5000/auth/google";
+  };
+
+  // Fonction pour se déconnecter
+  const handleGoogleDisconnect = () => {
+    fetch('http://localhost:5000/api/google/logout', {
+      method: 'POST',
+      credentials: 'include',
+    }).then(() => setIsGoogleConnected(false));
+  };
+
+  // Vérifier la connexion réelle à Google (après focus ou retour popup)
+  function checkGoogleConnection() {
+    console.log("Before check " + isGoogleConnected);
+    fetch('http://localhost:5000/api/google/status', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => setIsGoogleConnected(!!data.connected));
+    console.log("After check " + isGoogleConnected);
+  }
 
   return (
     <div className="bg-white rounded-2xl shadow p-7 mb-10">
@@ -160,7 +190,11 @@ const CalendarView = () => {
         />
       </div>
       <div className="mt-4 text-right">
-        <button className="bg-blue-800 text-white px-4 py-2 rounded font-semibold hover:bg-blue-900 transition text-sm">Connecter Google Calendar</button>
+        {isGoogleConnected ? (
+          <button onClick={handleGoogleDisconnect} className="bg-red-600 text-white px-4 py-2 rounded font-semibold hover:bg-red-700 transition text-sm">Se déconnecter Google Calendar</button>
+        ) : (
+          <button onClick={handleGoogleConnect} className="bg-blue-800 text-white px-4 py-2 rounded font-semibold hover:bg-blue-900 transition text-sm">Connecter Google Calendar</button>
+        )}
       </div>
     </div>
   );
