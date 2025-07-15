@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay, addMonths, subMonths, addWeeks, subWeeks, addDays, subDays } from 'date-fns';
 import fr from 'date-fns/locale/fr';
@@ -57,9 +57,9 @@ const VIEWS = [
 
 // Composant custom pour l'affichage des événements (heure sur la première ligne, titre sur la deuxième)
 const CustomEvent = ({ event }) => (
-  <div className="p-1 whitespace-normal break-words text-xs font-semibold leading-snug">
-    <div>{event.title}</div>
+  <div className="p-1 whitespace-normal break-words text-xs font-semibold leading-snug cursor-pointer hover:underline text-blue-800">
     <div className="font-bold">{format(event.start, 'HH:mm')} – {format(event.end, 'HH:mm')}</div>
+    <div>{event.title}</div>
   </div>
 );
 
@@ -67,6 +67,7 @@ const CalendarView = () => {
   const [date, setDate] = useState(new Date(2025, 6, 7));
   const [view, setView] = useState('week');
   const [isGoogleConnected, setIsGoogleConnected] = useState(false);
+  const [events, setEvents] = useState([]);
 
   // Vérifier la connexion Google au chargement
   useEffect(() => {
@@ -74,6 +75,58 @@ const CalendarView = () => {
       .then(res => res.json())
       .then(data => setIsGoogleConnected(!!data.connected));
   }, []);
+
+  // Fonction utilitaire pour obtenir la plage de dates affichée
+  const getRange = useCallback((date, view) => {
+    let start, end;
+    if (view === 'month') {
+      start = new Date(date.getFullYear(), date.getMonth(), 1);
+      end = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999);
+    } else if (view === 'week') {
+      const day = date.getDay();
+      const diffToMonday = (day + 6) % 7;
+      start = new Date(date);
+      start.setDate(date.getDate() - diffToMonday);
+      start.setHours(0, 0, 0, 0);
+      end = new Date(start);
+      end.setDate(start.getDate() + 6);
+      end.setHours(23, 59, 59, 999);
+    } else { // day
+      start = new Date(date);
+      start.setHours(0, 0, 0, 0);
+      end = new Date(date);
+      end.setHours(23, 59, 59, 999);
+    }
+    return {
+      start: start.toISOString(),
+      end: end.toISOString()
+    };
+  }, []);
+
+  // Charger les événements à chaque changement de date ou de vue
+  const fetchEvents = useCallback(() => {
+    if (!isGoogleConnected) return;
+    const { start, end } = getRange(date, view);
+    fetch(`http://localhost:5000/api/events?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`, {
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(data => {
+        const events = Array.isArray(data)
+          ? data.map(ev => ({
+              ...ev,
+              title: ev.summary,
+              start: new Date(ev.start?.dateTime || ev.start?.date),
+              end: new Date(ev.end?.dateTime || ev.end?.date)
+            }))
+          : [];
+        setEvents(events);
+      });
+  }, [date, view, isGoogleConnected, getRange]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [date, view, isGoogleConnected, fetchEvents]);
 
   // Années pour la listbox année
   const currentYear = date.getFullYear();
@@ -106,6 +159,7 @@ const CalendarView = () => {
   // Fonction pour se connecter à Google via le backend
   const handleGoogleConnect = () => {
     window.location.href = "http://localhost:5000/auth/google";
+    checkGoogleConnection();
   };
 
   // Fonction pour se déconnecter
@@ -118,11 +172,12 @@ const CalendarView = () => {
 
   // Vérifier la connexion réelle à Google (après focus ou retour popup)
   function checkGoogleConnection() {
-    console.log("Before check " + isGoogleConnected);
     fetch('http://localhost:5000/api/google/status', { credentials: 'include' })
       .then(res => res.json())
-      .then(data => setIsGoogleConnected(!!data.connected));
-    console.log("After check " + isGoogleConnected);
+      .then(data => {
+        setIsGoogleConnected(!!data.connected);
+        if (!!data.connected) fetchEvents();
+      });
   }
 
   return (
@@ -184,6 +239,11 @@ const CalendarView = () => {
           messages={{ week: 'Semaine', day: 'Jour', month: 'Mois', today: 'Aujourd\'hui', previous: 'Précédent', next: 'Suivant' }}
           style={{ borderRadius: '1rem', background: 'white', padding: 0 }}
           toolbar={false}
+          onSelectEvent={event => {
+            if (event.htmlLink) {
+              window.open(event.htmlLink, '_blank', 'noopener,noreferrer');
+            }
+          }}
           components={{
             event: CustomEvent
           }}
