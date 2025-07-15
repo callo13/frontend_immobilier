@@ -57,7 +57,7 @@ const VIEWS = [
 
 // Composant custom pour l'affichage des événements (heure sur la première ligne, titre sur la deuxième)
 const CustomEvent = ({ event }) => (
-  <div className="p-1 whitespace-normal break-words text-xs font-semibold leading-snug cursor-pointer hover:underline text-blue-800">
+  <div className="p-1 whitespace-normal break-words text-xs font-semibold leading-snug cursor-pointer">
     <div className="font-bold">{format(event.start, 'HH:mm')} – {format(event.end, 'HH:mm')}</div>
     <div>{event.title}</div>
   </div>
