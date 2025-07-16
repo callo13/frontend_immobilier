@@ -241,7 +241,11 @@ const CalendarView = () => {
           toolbar={false}
           onSelectEvent={event => {
             if (event.htmlLink) {
-              window.open(event.htmlLink, '_blank', 'noopener,noreferrer');
+              let link = event.htmlLink;
+              if (event.creator && event.creator.email) {
+                link += (link.includes('?') ? '&' : '?') + 'authuser=' + encodeURIComponent(event.creator.email);
+              }
+              window.open(link, '_blank', 'noopener,noreferrer');
             }
           }}
           components={{
