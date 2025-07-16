@@ -168,6 +168,7 @@ const CalendarView = () => {
       method: 'POST',
       credentials: 'include',
     }).then(() => setIsGoogleConnected(false));
+    setEvents([]);
   };
 
   // Vérifier la connexion réelle à Google (après focus ou retour popup)
