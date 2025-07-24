@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import ListingCard from "./ListingCard";
+import PropertyCard from "./PropertyCard";
 
 const RecentListings = ({ listings }) => {
   // Extraire toutes les personnes intéressées uniques
@@ -39,7 +39,14 @@ const RecentListings = ({ listings }) => {
       )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredListings.map((l, i) => (
-          <ListingCard key={i} {...l} />
+          <PropertyCard
+            key={i}
+            price={l.price}
+            size={l.size}
+            location={l.city || l.location}
+            interestedUsers={l.interested}
+            imageUrl={l.img}
+          />
         ))}
       </div>
     </div>

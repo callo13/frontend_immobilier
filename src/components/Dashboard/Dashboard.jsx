@@ -39,7 +39,7 @@ const listings = [
     price: "$350,000",
     city: "Atlanta",
     size: "1,800 sq ft",
-    interested: ["Pierre","Paul","Jacques"],
+    interested: ["Pierre Pertuis","Paul Roussel","Jacques Dutronc"],
   },
   {
     img: "https://images.unsplash.com/photo-1460518451285-97b6aa326961?auto=format&fit=crop&w=400&q=80",
@@ -47,6 +47,7 @@ const listings = [
     city: "Dallas",
     size: "2,100 sq ft",
     date: "2d ago",
+    interested: ["Pierre Pertuis","René","Arthur"],
   },
   {
     img: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=400&q=80",
