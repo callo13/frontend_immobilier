@@ -39,7 +39,7 @@ const listings = [
     price: "$350,000",
     city: "Atlanta",
     size: "1,800 sq ft",
-    date: "2d ago",
+    interested: ["Pierre","Paul","Jacques"],
   },
   {
     img: "https://images.unsplash.com/photo-1460518451285-97b6aa326961?auto=format&fit=crop&w=400&q=80",
