@@ -34,9 +34,9 @@ const CalendarView = () => {
   const [isGoogleConnected, setIsGoogleConnected] = useState(false);
   const [events, setEvents] = useState([]);
 
-  // Vérifier la connexion Google au chargement
-  useEffect(() => {
-    fetch('http://localhost:5000/api/google/status', { credentials: 'include' })
+                // Vérifier la connexion Google au chargement
+              useEffect(() => {
+                fetch('https://backend-immobilier.onrender.com/api/google/status', { credentials: 'include' })
       .then(res => res.json())
       .then(data => setIsGoogleConnected(!!data.connected));
   }, []);
@@ -92,7 +92,7 @@ const CalendarView = () => {
   const fetchEvents = useCallback(() => {
     if (!isGoogleConnected) return;
     const { start, end } = getRange(date, view);
-    fetch(`http://localhost:5000/api/events?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`, {
+                    fetch(`https://backend-immobilier.onrender.com/api/events?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`, {
       credentials: 'include'
     })
       .then(res => res.json())
@@ -113,9 +113,9 @@ const CalendarView = () => {
     fetchEvents();
   }, [date, view, isGoogleConnected, fetchEvents]);
 
-  // Vérifier la connexion réelle à Google (après focus ou retour popup)
-  function checkGoogleConnection() {
-    fetch('http://localhost:5000/api/google/status', { credentials: 'include' })
+                // Vérifier la connexion réelle à Google (après focus ou retour popup)
+              function checkGoogleConnection() {
+                fetch('https://backend-immobilier.onrender.com/api/google/status', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         setIsGoogleConnected(!!data.connected);
@@ -125,12 +125,12 @@ const CalendarView = () => {
 
   // Connexion Google
   const handleGoogleConnect = () => {
-    window.location.href = "http://localhost:5000/auth/google";
+    window.location.href = "https://backend-immobilier.onrender.com/auth/google";
   };
 
-  // Déconnexion Google
-  const handleGoogleDisconnect = () => {
-    fetch('http://localhost:5000/api/google/logout', {
+                // Déconnexion Google
+              const handleGoogleDisconnect = () => {
+                fetch('https://backend-immobilier.onrender.com/api/google/logout', {
       method: 'POST',
       credentials: 'include',
     }).then(() => {
