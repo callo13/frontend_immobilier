@@ -17,7 +17,9 @@ const RecentListings = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        setListings(data.data);
+        // Essayer différentes structures possibles
+        const listingsData = data.data || data || [];
+        setListings(listingsData);
       } catch (err) {
         console.error('Erreur lors de la récupération des biens:', err);
         setError(err.message);
@@ -107,16 +109,26 @@ const RecentListings = () => {
         </div>
       )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredListings.map((listing) => (
-          <PropertyCard
-            key={listing.id}
-            price={formatPrice(listing["Loyer mensuel (€)"])}
-            size={formatSize(listing["Surface en m²"])}
-            location={listing.Ville}
-            interestedUsers={listing["Contacts clients"] || []}
-            imageUrl={listing.Image}
-          />
-        ))}
+        {filteredListings.map((listing) => {
+          // Chercher le champ qui contient "Lien" et "annonce"
+          const lienAnnonce = Object.keys(listing).find(key => 
+            key.toLowerCase().includes('lien') && key.toLowerCase().includes('annonce')
+          );
+          
+          const lienValue = lienAnnonce ? listing[lienAnnonce] : null;
+          
+          return (
+            <PropertyCard
+              key={listing.id}
+              price={formatPrice(listing["Loyer mensuel (€)"])}
+              size={formatSize(listing["Surface en m²"])}
+              location={listing.Ville}
+              interestedUsers={listing["Contacts clients"] || []}
+              imageUrl={listing.Image}
+              listingUrl={lienValue}
+            />
+          );
+        })}
       </div>
     </div>
   );

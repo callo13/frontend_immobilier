@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const PropertyCard = ({ price, size, location, interestedUsers = [], imageUrl }) => {
+const PropertyCard = ({ price, size, location, interestedUsers = [], imageUrl, listingUrl }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -51,6 +51,11 @@ const PropertyCard = ({ price, size, location, interestedUsers = [], imageUrl })
         )}
         {/* View button */}
         <button
+          onClick={() => {
+            if (listingUrl) {
+              window.open(listingUrl, '_blank', 'noopener,noreferrer');
+            }
+          }}
           className={`w-full bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white border-0 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wide transition-all duration-300 ${isHovered ? 'translate-y-[-2px] shadow-lg' : ''}`}
         >
           View Listing
