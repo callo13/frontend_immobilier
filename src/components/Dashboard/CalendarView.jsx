@@ -198,6 +198,8 @@ const CalendarView = () => {
           messages={{ week: 'Semaine', day: 'Jour', month: 'Mois', today: 'Aujourd\'hui', previous: 'Précédent', next: 'Suivant' }}
           style={{ borderRadius: '1rem', background: 'white', padding: 0 }}
           toolbar={false}
+          min={new Date(0, 0, 0, 7, 0, 0)}
+          max={new Date(0, 0, 0, 20, 0, 0)}
           components={view === 'day' ? { event: CustomEvent, header: CustomDayHeader } : { event: CustomEvent }}
           onSelectEvent={event => {
             if (event.htmlLink) {
