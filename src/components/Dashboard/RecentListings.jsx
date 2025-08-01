@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import PropertyCard from "./PropertyCard";
+import { API_ENDPOINTS } from "../../config/api";
 
 const RecentListings = () => {
   const [listings, setListings] = useState([]);
@@ -11,7 +12,7 @@ const RecentListings = () => {
     const fetchListings = async () => {
       try {
         setLoading(true);
-        const response = await fetch('https://backend-immobilier.onrender.com/api/biens/with-contacts');
+        const response = await fetch(API_ENDPOINTS.BIENS_WITH_CONTACTS);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
