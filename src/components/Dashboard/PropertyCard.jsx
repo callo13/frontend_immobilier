@@ -49,17 +49,28 @@ const PropertyCard = ({ price, size, location, interestedUsers = [], imageUrl, l
             </div>
           </div>
         )}
-        {/* View button */}
-        <button
-          onClick={() => {
-            if (listingUrl) {
-              window.open(listingUrl, '_blank', 'noopener,noreferrer');
-            }
-          }}
-          className={`w-full bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white border-0 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wide transition-all duration-300 ${isHovered ? 'translate-y-[-2px] shadow-lg' : ''}`}
-        >
-          View Listing
-        </button>
+        {/* Buttons */}
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              if (listingUrl) {
+                window.open(listingUrl, '_blank', 'noopener,noreferrer');
+              }
+            }}
+            className={`flex-1 bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white border-0 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wide transition-all duration-300 ${isHovered ? 'translate-y-[-2px] shadow-lg' : ''}`}
+          >
+            View Listing
+          </button>
+          <button
+            onClick={() => {
+              window.open('https://calendar.google.com/calendar/render?action=TEMPLATE', '_blank', 'noopener,noreferrer');
+              console.log('Programmer un appel pour:', location);
+            }}
+            className={`flex-1 bg-gradient-to-r from-[#2c3e50] to-[#34495e] text-white border-0 py-2.5 rounded-lg text-sm font-bold uppercase tracking-wide transition-all duration-300 ${isHovered ? 'translate-y-[-2px] shadow-lg' : ''}`}
+          >
+            Program Call
+          </button>
+        </div>
       </div>
     </div>
   );
