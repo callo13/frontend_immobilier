@@ -68,10 +68,11 @@ const listings = [
 const Dashboard = () => (
   <div className="min-h-screen bg-[#f5f3ef] px-4 md:px-8 xl:px-12 2xl:px-16 py-6 font-sans w-full max-w-screen-2xl mx-auto">
     <h1 className="text-5xl font-extrabold text-blue-800 mb-8 tracking-tight">DASHBOARD</h1>
-    <KpiGrid kpiData={kpiData} />
+    <RecentListings listings={listings} />
     <CalendarView />
     <AppointmentsChart />
-    <RecentListings listings={listings} />
+    <KpiGrid kpiData={kpiData} />
+    
   </div>
 );
 
