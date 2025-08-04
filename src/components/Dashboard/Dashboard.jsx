@@ -3,6 +3,7 @@ import KpiGrid from "./KpiGrid";
 import AppointmentsChart from "./AppointmentsChart";
 import RecentListings from "./RecentListings";
 import CalendarView from "./CalendarView";
+import logo from "../../assets/logo.png";
 
 const kpiData = [
   {
@@ -39,7 +40,7 @@ const listings = [
     price: "$350,000",
     city: "Atlanta",
     size: "1,800 sq ft",
-    interested: ["Pierre Pertuis","Paul Roussel","Jacques Dutronc"],
+    interested: ["Pierre Pertuis", "Paul Roussel", "Jacques Dutronc"],
   },
   {
     img: "https://images.unsplash.com/photo-1460518451285-97b6aa326961?auto=format&fit=crop&w=400&q=80",
@@ -47,7 +48,7 @@ const listings = [
     city: "Dallas",
     size: "2,100 sq ft",
     date: "2d ago",
-    interested: ["Pierre Pertuis","René","Arthur"],
+    interested: ["Pierre Pertuis", "René", "Arthur"],
   },
   {
     img: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=400&q=80",
@@ -67,12 +68,22 @@ const listings = [
 
 const Dashboard = () => (
   <div className="min-h-screen bg-[#f5f3ef] px-4 md:px-8 xl:px-12 2xl:px-16 py-6 font-sans w-full max-w-screen-2xl mx-auto">
-    <h1 className="text-5xl font-extrabold text-blue-800 mb-8 tracking-tight">DASHBOARD</h1>
+    <div className="relative flex items-center justify-center w-full px-4 py-4">
+      <img
+        src={logo}
+        alt="IA Logo"
+        className="absolute left-4 top-1/2 -translate-y-1/2 w-32 h-32 object-contain"
+      />
+      <h1 className="text-5xl font-extrabold text-blue-800 tracking-tight text-center">
+        DASHBOARD
+      </h1>
+    </div>
+
     <RecentListings listings={listings} />
     <CalendarView />
     <AppointmentsChart />
     <KpiGrid kpiData={kpiData} />
-    
+
   </div>
 );
 
