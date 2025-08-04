@@ -68,7 +68,7 @@ const listings = [
 
 const Dashboard = () => (
   <div className="min-h-screen bg-[#f5f3ef] px-4 md:px-8 xl:px-12 2xl:px-16 py-6 font-sans w-full max-w-screen-2xl mx-auto">
-    <div className="relative flex items-center justify-center w-full px-4 py-4">
+    <div className="relative flex items-center justify-center w-full px-4 py-4 mb-4">
       <img
         src={logo}
         alt="IA Logo"
